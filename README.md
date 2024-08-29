@@ -269,6 +269,12 @@ Imagem abaixo com resultado da criação do repositório
 
 
 __Atualizando o repositório - Commit__ <br>
+Se for um novo repositório, deve-se adicionar o endereço de origem no local com o comando abaixo:
+
+~~~shell
+git remote add origin https://github.com/LuizPerciliano/mada_sync
+~~~
+
 Caso seja um repositório de desenvolvimento compartilhado, verificar se no repositório remoto há algo novo e pedir para baixar.
 ~~~shell
 git pull
@@ -296,9 +302,6 @@ git log
 
 
 
-~~~shell
-git remote add origin https://github.com/LuizPerciliano/mada_sync
-~~~
 
 ~~~shell
 git pull origin main
