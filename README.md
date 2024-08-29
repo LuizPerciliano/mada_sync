@@ -1,4 +1,7 @@
 # Projeto final 🎉 do Curso de FastAPI do ZERO com o 🦖 Dunossauro
+
+__status em andamento__
+
 FastAPI é um framework Python moderno, projetado para simplicidade, velocidade e eficiência, facilitando o desenvolvimento de APIs.
 
 ## 01 Entendimento do Negócio
@@ -41,13 +44,6 @@ Demais detalhes em: https://fastapidozero.dunossauro.com/14/#o-projeto
 1. escrevendo no `README.MD` (atualizando sempre)
 1. instalando a biblioteca do FastAPI
 
-
-
-
-
-3. ignr
-
-
 ### Execução dos comandos em ordem conforme necessidade
 ~~~shell
 python --version
@@ -62,6 +58,7 @@ pyenv versions
 
 pip install pipx
 pipx install poetry
+pipx install ignr
 pipx ensurepath # executar após poetry instalado, fechar e reabrir o terminal
 
 cd C:\projetos\projetos-GIT\
@@ -72,11 +69,6 @@ cd mada
 pyenv local 3.12.5 # dizer ao pyenv qual versão do python será usada nesse diretório
 poetry install # Cria o ambiente virtual (venv)
 ~~~
-
-
-
-
-*********************
 
 ### Primeira Execução de um "Hello, World!" teste no terminal
 
@@ -198,7 +190,6 @@ from mada.app import app
 client = TestClient(app)
 ~~~
 
-
 ~~~shell
 task format
 task test 
@@ -224,10 +215,9 @@ Aqui é a etapa onde acontece a ação principal do teste, que consiste em chama
 __Fase 3 - Afirmar (Assert)__
 Esta é a etapa de verificar se tudo correu como esperado. É fácil notar onde estamos fazendo a verificação, pois essa linha sempre tem a palavra reservada assert. A verificação é booleana, ou está correta, ou não está. Por isso, um teste deve sempre incluir um assert para verificar se o comportamento esperado está correto.
 
-
 ### Criando o repositório no git
 
-[... deu muito ruim nessa parte do git, refazer outro projeto com cuidado]
+[... deu muito ruim nessa parte do git, refazer outro projeto com cuidado. no próximo, testar sem definir "-b main"]
 
 Criar um arquivo `.gitignore` para não adicionar o ambiente virtual e outros arquivos desnecessários no versionamento de código.
 ~~~shell
@@ -245,7 +235,6 @@ Para criar um repositório remoto no GitHub externo caso não exista, usar o com
 gh repo create
 ~~~
 
-
 #### Respostas do gh
 ~~~shell
 - Create a new repository on GitHub from scratch # ok (Enter)
@@ -262,11 +251,6 @@ gh repo create
 
 Imagem abaixo com resultado da criação do repositório
 ![alt text](image-1.png)
-
-
-
-
-
 
 __Atualizando o repositório - Commit__ <br>
 Se for um novo repositório, deve-se adicionar o endereço de origem no local com o comando abaixo:
@@ -292,137 +276,65 @@ git commit -m "Criado o projeto final do curso de FastAPI do Dunossauro"
 git push --set-upstream origin main 
 ~~~
 
+~~~shell
+git push --force origin main # deu problema para subir, com isso foi
+~~~
+
 Conferindo se subiu tudo ok
 ~~~shell
 git log
 ~~~
 
-
-
-
-
-
-
-~~~shell
-git pull origin main
-~~~
-
-~~~shell
-git add .
-~~~
-
-~~~shell
-git commit -m "Configuração inicial do projeto"
-~~~
-
-~~~shell
-git push
-~~~
-
-<!-- https://github.com/markdown-templates/markdown-emojis -->
-Deu muito ruim nessa parte do git, refazer outro projeto com cuidado e anotar corretamente os passos ⚠ :bowtie:
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-### Instalações se necessário
+__Instalações se necessário__
 ~~~shell
 Invoke-WebRequest -UseBasicParsing -Uri "https://raw.githubusercontent.com/pyenv-win/pyenv-win/master/pyenv-win/install-pyenv-win.ps1" -OutFile "./install-pyenv-win.ps1"; &"./install-pyenv-win.ps1"
 ~~~
 
 
+## 03 Desenvolvendo a aplicação
+
+### Pydantic
+No universo de APIs e contratos de dados, especialmente ao trabalhar com Python, o Pydantic se destaca como uma ferramenta poderosa e versátil. Essa biblioteca, altamente integrada ao ecossistema Python, especializa-se na criação de schemas de dados e na validação de tipos. Com o Pydantic, é possível expressar schemas JSON de maneira elegante e eficiente através de classes Python, proporcionando uma ponte robusta entre a flexibilidade do JSON e a segurança de tipos de Python.
+
+Por exemplo, o schema JSON {'message': 'Olá mundo!'}. Com o Pydantic, podemos representar esse schema na forma de uma classe Python chamada Message.
+
+Para iniciar o desenvolvimento com schemas no contexto do FastAPI, podemos criar um arquivo chamado fast_zero/schemas.py e definir a classe Message. Vale ressaltar que o Pydantic é uma dependência integrada do FastAPI (não precisa ser instalado), refletindo a importância dessa biblioteca no processo de validação de dados e na geração de documentação automática para APIs, como a documentação OpenAPI.
+
 ~~~shell
-pipx install ignr
+echo > mada/schemas.py
 ~~~
 
----
 
+### Criando Rotas CRUD
+1. criar o diretório de rotas
+1. criar as rotas necessárias
+1. criar o esquema do pydantic
+1. criar o modelo
+1. criar a base de dados
+1. criar a segurança 
+1. definir as configurações
 
-
-
-
-
-
-
-
-
-
-# Aula 02 Introdução ao desenvolvimento WEB
-
-## Usando o fastapi na rede local
 ~~~shell
-fastapi dev fast_zero_v2/app.py --host 0.0.0.0
+mkdir mada/routers
 ~~~
 
-ou com o comando abaixo para o mesmo resultado
 ~~~shell
-task run --host 0.0.0.0
-~~~
-
-Assim, você pode acessar a aplicação de outro computador na sua rede usando o endereço IP da sua máquina.
-
-Descobrindo o ip local no Windows
-~~~shell
-ipconfig
-~~~
-
-Descobrindo o seu endereço local usando python pelo interpretador
-~~~shell
-python
-~~~
-
-~~~python
-import socket
-s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-s.connect(("8.8.8.8", 80))
-s.getsockname()[0]
+echo > mada/routers/usuario.py
+echo > mada/routers/livro.py
+echo > mada/routers/autor.py
 ~~~
 
 
-Agora basta acessar a aplicação pelo endereço: http://192.168.0.5:8000/, ficando acessível também por outras máquinas dentro dessa rede, assim como o celular.
 
-Criando novo arquivo para testes e aprendizado de endpoints.
-~~~shell
-type nul > fast_zero_v2/aula_00.py
-~~~
+# Pendências
+- criar o autor
+- vincular autor ao livro
+- testar a aplicação
+- configurar o CI no GitHUb
+- criar a(s) máquina(s) docker
+- subir a aplicação no fly.io
 
-Abrir o arquivo `fast_zero_v2/aula_00.py` e copiar o script abaixo.
-~~~python
-from fastapi import FastAPI
-from fastapi.responses import HTMLResponse
-
-app = FastAPI()
-
-
-@app.get('/')
-def read_root():
-    return {'message': 'Olá Mundo!'}
-~~~
-
-Executar o arquivo específico.
-~~~shell
-fastapi dev fast_zero_v2/aula_00.py
-~~~
-
-## Pydantic
-~~~shell
-echo > fast_zero_v2/schemas.py
-~~~
-
-
-# Aula 03 Estruturando o Projeto e Criando Rotas CRUD
-## Implementando endpoints
+<!-- 
 
 ### Rota do POST
 Arquivo `fast_zero_v2/app.py`.
@@ -441,7 +353,6 @@ class UserSchema(BaseModel):
     password: str
 ~~~
 
-<!-- ... desenvolvendo e incrementando o projeto ... estudar mais esta aula]-->
 
 ## Validação e pydantic
 
@@ -985,14 +896,10 @@ git push --set-upstream origin main
 
 
 
-<!--
-Rememorar como é para se autenticar e talvez por isso não aparece o swgger com [users] usuários*
--->
+
 
 # Aula 10 Dockerizando a nossa aplicação e introduzindo o PostgreSQL
-<!-- Não assisti o vídeo dessa aula 
-https://www.youtube.com/watch?v=bpBbbUgmdMs&list=PLOQgLBuj2-3IuFbt-wJw2p2NiV9WTRzIP
--->
+
 Objetivos da aula:
 
 - Compreender os conceitos básicos do Docker
@@ -1077,7 +984,7 @@ Oh Glória, tudo ok por aqui até o momento.
 
 
 ## Resolvendo os testes que estavam rodando no sqlite
-<!-- Vídeo Aula 10 - 00:27:09 -->
+
 
 ### Ajustando o arquivo `conftest.py`
 Agora todos os meus testes passaram, mas dependem do banco de dados em pé.
@@ -1097,7 +1004,7 @@ task test -s
 
 
 ## Parte 2 - Criando a imagem do nosso projeto
-<!-- Vídeo Aula 10 - 00:51:28 -->
+
 
 Criando na raiz o arquivo `Dockerfile`
 ~~~shell
@@ -1185,7 +1092,6 @@ docker-compose up
 
 Caso dê algum erro de porta, derrube as imagens e crie o compose novamente.
 
-<!-- Vídeo Aula 10 - 01:24:41 o meu está dando erro com portas já usadas-->
 
 ![alt text](image-5.png)
 
@@ -1257,16 +1163,9 @@ git log
 
 
 # Aula 11 Automatizando os testes com Integração Contínua (CI)
-<!-- https://fastapidozero.dunossauro.com/11/ 
-https://github.com/features/actions
--->
-<!-- Minha aplicação não está rodando por erro de porta, verificar 
-qd for iniciar a aula, reiniciar a máquina.
--->
 
 ## Preparando o ambiente
-<!-- No projeto do duno tem o diretório `.git` que não sei de onde é.
--->
+
 Criando os diretórios
 ~~~shell
 mkdir .github
@@ -1359,14 +1258,7 @@ Pesquisar sobre o act e implantar.
 
 
 # Aula 12 Fazendo deploy no Fly.io
-<!-- https://fastapidozero.dunossauro.com/12/ 
-https://youtu.be/Xt7A5QnsSeo?list=PLOQgLBuj2-3IuFbt-wJw2p2NiV9WTRzIP
-https://fly.io/
 
-No projeto do duno tem o diretório `.git` que não sei de onde é.
-
-Descobrir o que é sentry
--->
 
 ## O Fly.io
 O Fly.io é uma plataforma de deploy que nos permite lançar nossas aplicações na nuvem e que oferece serviços para diversas linguagens de programação e frameworks como Python e Django, PHP e Laravel, Ruby e Rails, Elixir e Phoenix, etc.
@@ -1445,7 +1337,6 @@ Uma coisa que podemos notar na resposta do secrets é que ele leu nosso arquivo 
 Desta forma, podemos registar a variável de ambiente DATABASE_URL novamente. Agora com o valor correto:
 
 
-<!-- flictl no notion -->
 ~~~shell
 flyctl secrets set DATABASE_URL="postgresql+psycopg://postgres:nome-user-do-app:senhageradanofly@nome-da-maquina-db.flycast:5432/nome-bd-da-app”
 ~~~
@@ -1470,17 +1361,6 @@ ou
 fly logs -a fast-zero-v2 | tl # tem que ter a biblioteca tl instalada
 ou site app
 ~~~
-
-<!--
-URL ADM:
-https://fly.io/apps/fast-zero-v2/monitoring
-
-APP:
-https://fast-zero-v2.fly.dev/
-
-até o minuto 00:57 ok, mas o meu não
-
--->
 
 ## Migrations
 Agora que nosso container já está em execução no fly, podemos executar o comando de migração dos dados, pois ele está na mesma rede do postgres configurado pelo Fly2. Essa conexão é feita via SSH e pode ser efetuada com o comando ssh do flyctl.
@@ -1535,17 +1415,12 @@ git log
 
 
 # Aula 13 Despedida e próximos passos
-<!-- https://youtu.be/33vn7dxg37U?list=PLOQgLBuj2-3IuFbt-wJw2p2NiV9WTRzIP 
-https://fastapidozero.dunossauro.com/13/
--->
+
 Revisão geral e um tapa no readme.
 
 # Projeto final
-<!-- https://fastapidozero.dunossauro.com/14/
--->
 
-Em andamento ...
----
+
 
 # Final da Aplicação
 ## Passos para subir a aplicação e ou ajustar o projeto após tudo finalizado 
@@ -1566,4 +1441,7 @@ poetry shell
 # testa
 # comita
 # deploy
----
+
+
+
+-->
