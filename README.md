@@ -748,7 +748,7 @@ Agora ir no repositório https://github.com/LuizPerciliano/madaxxx e atualizar "
 
 Deu erro pois faltou atualizar os segredos no `.github/workflows/pipeline.yaml`
 
-# Aula 12 Fazendo deploy no Fly.io
+# Fazendo deploy no Fly.io
 ## O Fly.io
 O Fly.io é uma plataforma de deploy que nos permite lançar nossas aplicações na nuvem e que oferece serviços para diversas linguagens de programação e frameworks como Python e Django, PHP e Laravel, Ruby e Rails, Elixir e Phoenix, etc.
 
@@ -806,13 +806,11 @@ flyctl secrets set SECRET_KEY="your-secret-key"
 ~~~
 
 
-Uma coisa que podemos notar na resposta do secrets é que ele leu nosso arquivo .env e adicionou a variável de ambiente DATABASE_URL com base no postgres que foi criado durante o comando launch. Um ponto de atenção que devemos tomar nesse momento, é que a variável criada é iniciada com o prefixo postgres://. Para que o sqlalchemy reconheça esse endereço como válido, o prefixo deve ser alterado para postgresql+psycopg://. Para isso, usaremos a url fornecida pelo comando launch e alterar o prefixo.
-
-Desta forma, podemos registar a variável de ambiente DATABASE_URL novamente. Agora com o valor correto:
+Podemos registar a variável de ambiente DATABASE_URL novamente, agora a correta fornecida pelo fly.io. Agora com o valor correto:
 
 
 ~~~shell
-flyctl secrets set DATABASE_URL="postgresql+psycopg://postgres:nome-user-do-app:senhageradanofly@nome-da-maquina-db.flycast:5432/nome-bd-da-app”
+flyctl secrets set DATABASE_URL="postgresql+psycopg://postgres:nome-user-do-app:senhageradanofly@nome-da-maquina-db.flycast:5432/nome-app”
 ~~~
 
 ## Deploy da aplicação
