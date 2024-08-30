@@ -637,33 +637,6 @@ Criação do compose.yaml
 echo > compose.yaml
 ~~~
 
-~~~yaml
-services:
-  fastzero_database:
-    image: postgres
-    volumes:
-      - pgdata:/var/lib/postgresql/data
-    environment:
-      POSTGRES_USER: app_user
-      POSTGRES_DB: app_db
-      POSTGRES_PASSWORD: app_password
-    ports:
-      - "5432:5432"
-
-  fastzero_app:
-    image: mada_app
-    entrypoint: ./entrypoint.sh
-    build: .
-    ports:
-      - "8000:8000"
-    depends_on:
-      - mada_database
-    environment:
-      DATABASE_URL: postgresql+psycopg://app_user:app_password@mada_database:5432/app_db
-
-volumes:
-  pgdata:
-~~~
 
 ~~~shell
 docker-compose up
@@ -766,10 +739,6 @@ Para evitar o deploy no primeiro momento, pois ainda existem coisas para serem c
 ~~~shell
 flyctl launch --no-deploy
 ~~~
-
-Acessos:
-- Admin URL: https://fly.io/apps/fastxxx
-
 
 ## Configuração dos segredos
 Para que nossa aplicação funcione de maneira adequada, todas as variáveis de ambiente precisam estar configuradas no ambiente. O flyctl tem um comando para vermos as variáveis que já foram definidas no ambiente e também para definir novas. O comando secrets.
@@ -878,6 +847,9 @@ git commit -m "Adicionando arquivos gerados pelo Fly"
 git push --set-upstream origin main 
 ~~~
 
-Conferindo se subiu tudo ok
-~~~shell
-git log
+
+
+# Pendências ⚠ :bowtie:
+- Ajustar o autor
+- vincular autor ao livro
+- ajustar o BD no Fly.io
