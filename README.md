@@ -291,19 +291,18 @@ Invoke-WebRequest -UseBasicParsing -Uri "https://raw.githubusercontent.com/pyenv
 ~~~
 
 
-## 03 Desenvolvendo a aplicação
+## 03 Desenvolvendo a aplicação ⚠ :bowtie:
 
-### Pydantic
+### Pydantic 
 No universo de APIs e contratos de dados, especialmente ao trabalhar com Python, o Pydantic se destaca como uma ferramenta poderosa e versátil. Essa biblioteca, altamente integrada ao ecossistema Python, especializa-se na criação de schemas de dados e na validação de tipos. Com o Pydantic, é possível expressar schemas JSON de maneira elegante e eficiente através de classes Python, proporcionando uma ponte robusta entre a flexibilidade do JSON e a segurança de tipos de Python.
 
 Por exemplo, o schema JSON {'message': 'Olá mundo!'}. Com o Pydantic, podemos representar esse schema na forma de uma classe Python chamada Message.
 
-Para iniciar o desenvolvimento com schemas no contexto do FastAPI, podemos criar um arquivo chamado fast_zero/schemas.py e definir a classe Message. Vale ressaltar que o Pydantic é uma dependência integrada do FastAPI (não precisa ser instalado), refletindo a importância dessa biblioteca no processo de validação de dados e na geração de documentação automática para APIs, como a documentação OpenAPI.
+Para iniciar o desenvolvimento com schemas no contexto do FastAPI, podemos criar um arquivo chamado mada/schemas.py e definir a classe Message. Vale ressaltar que o Pydantic é uma dependência integrada do FastAPI (não precisa ser instalado), refletindo a importância dessa biblioteca no processo de validação de dados e na geração de documentação automática para APIs, como a documentação OpenAPI.
 
 ~~~shell
 echo > mada/schemas.py
 ~~~
-
 
 ### Criando Rotas CRUD
 1. criar o diretório de rotas
@@ -324,35 +323,16 @@ echo > mada/routers/livro.py
 echo > mada/routers/autor.py
 ~~~
 
-
-
-# Pendências
-- criar o autor
-- vincular autor ao livro
-- testar a aplicação
-- configurar o CI no GitHUb
-- criar a(s) máquina(s) docker
-- subir a aplicação no fly.io
-
-<!-- 
-
-### Rota do POST
-Arquivo `fast_zero_v2/app.py`.
-~~~python
-@app.post('/users/', status_code=HTTPStatus.CREATED)
-def create_user():
-    ...
-~~~
+## Criando um banco de dados falso
 
 ### Modelo de dados
-Arquivo `fast_zero_v2/schemas.py`.
+Arquivo `mada/schemas.py`.
 ~~~python
 class UserSchema(BaseModel):
     username: str
     email: str
     password: str
 ~~~
-
 
 ## Validação e pydantic
 
@@ -362,24 +342,7 @@ Instalando + ferramentas de desenvolvimento
 poetry add "pydantic[email]"
 ~~~
 
-## Criando um banco de dados falso
-
-
-### Não se repita (DRY)
-Arquivo `tests/conftest.py`.
-
-~~~shell
-echo > tests/conftest.py
-~~~
-
-## Implementando a Rota GET
-
-
-## Implementando a Rota PUT
-
-## Implementando a Rota DELETE
-
-# Aula 04 Configurando o Banco de Dados e Gerenciando Migrações com Alembic
+# Configurando o Banco de Dados e Gerenciando Migrações com Alembic
 
 Instalando + ferramentas de desenvolvimento 
 ~~~shell
@@ -390,11 +353,7 @@ poetry add sqlalchemy
 poetry add pydantic-settings
 ~~~
 
-Agora definiremos nosso modelo User. No diretório fast_zero, crie um novo arquivo chamado models.py e incluiremos o seguinte código no arquivo:
-
-~~~shell
-echo > fast_zero_v2/models.py
-~~~
+Agora definiremos nosso modelo User. No diretório mada, crie um novo arquivo chamado models.py.
 
 ## Testando as Tabelas
 Criaremos uma fixture para a conexão com o banco de dados chamada session no arquivo `tests/conftest.py`.
@@ -408,34 +367,15 @@ echo > tests/test_db.py
 
 #### Executando o teste
 
-~~~shell
-exit
-~~~
-
-~~~shell
-task format
-~~~
-
-~~~shell
-task test
-~~~
-
-O ideal é ter pelo menos dois terminais ativos, um para rodar a aplicação e outro para os testes e demais comandos.
-~~~shell
-task run
-~~~
-
 ## Configuração do ambiente do banco de dados
 ~~~shell
-echo > fast_zero_v2/settings.py
+echo > mada/settings.py
 ~~~
 
-
-Agora, definiremos o DATABASE_URL no nosso arquivo de ambiente .env. Crie o arquivo na raiz do projeto e adicione a seguinte linha:
+Agora, definiremos o DATABASE_URL no nosso arquivo de ambiente `.env`. Crie o arquivo na raiz do projeto e adicione a seguinte linha:
 ~~~shell
 echo > .env
 ~~~
-
 
 ~~~shell
 echo 'database.db' >> .gitignore
@@ -454,7 +394,6 @@ alembic init migrations
 ### Criando uma migração automática
 Com o Alembic devidamente instalado e iniciado, agora é o momento de gerar nossa primeira migração. Mas, antes disso, precisamos garantir que o Alembic consiga acessar nossas configurações e modelos corretamente. Para isso, faremos algumas alterações no arquivo migrations/env.py.
 
-
 Para criar a migração, utilizamos o seguinte comando:
 ~~~shell
 alembic revision --autogenerate -m "create users table"
@@ -462,10 +401,6 @@ alembic revision --autogenerate -m "create users table"
 
 ### Analisando a migração automática
 Vamos abrir e analisar o arquivo de migração `migrations/versions/f3577cecc9f1_create_users_table.py`.
-
-~~~shell
-code migrations/versions/f3577cecc9f1_create_users_table.py
-~~~
 
 Vamos acessar o console do sqlite e verificar se isso foi feito. Precisamos chamar sqlite3 nome_do_arquivo.db ou usar uma aplicativo que abre diversos tipos de banco de dados como o DBeaver:
 ~~~shell
@@ -477,31 +412,10 @@ Para aplicar as migrações, usamos o comando upgrade do CLI Alembic. O argument
 alembic upgrade head
 ~~~
 
-Agora, se examinarmos nosso banco de dados novamente:
-
-## Commit
-Primeiro, verificaremos o status do nosso repositório para ver as mudanças que fizemos:
-~~~shell
-git status
-~~~
-
-~~~shell
-git add . 
-~~~
-
-~~~shell
-git commit -m "Adicionada a primeira migração com Alembic. Criada tabela de usuários."
-~~~
-
-~~~shell
-git push
-~~~
-
-
-# Aula 05 Integrando Banco de Dados a API
+# Integrando Banco de Dados a API
 Para isso, criaremos a função get_session e também definiremos Session no arquivo `database.py`.
 ~~~shell
-echo > .\fast_zero_v2\database.py
+echo > .\mada\database.py
 ~~~
 
 ## Modificando o Endpoint POST /users
@@ -509,41 +423,10 @@ echo > .\fast_zero_v2\database.py
 ### Testando o Endpoint POST /users com Pytest e Fixtures
 Alteraremos a nossa fixture client para substituir a função get_session que estamos injetando no endpoint pela sessão do banco em memória que já tínhamos definido para banco de dados.
 
-
-## Modificando o Endpoint GET /users
-
-### Testando o Endpoint GET /users
-
-### Criando uma fixture para User
-
 ### Integrando o Schema ao Model
-ajustando o arquivo `fast_zero/schemas.py` <p>
+ajustando o arquivo `mada/schemas.py` <p>
 
-## Modificando o Endpoint PUT /users
-
-### Adicionando o teste do PUT
-
-## Modificando o Endpoint DELETE /users
-
-### Adicionando testes para DELETE
-
-
-## Atualizando o repositório - Commit
-Primeiro, verificar o status do repositório para ver as mudanças realizadas:
-~~~shell
-git status
-~~~
-
-Se tudo estiver ok, adicionar os arquivos, comitar e por fim enviar para o repositório remoto.
-~~~shell
-git add . 
-git commit -m "Revisando as aulas com um novo projeto criado.Atualizando endpoints para usar o banco de dados real."
-git push
-~~~
-
-
-
-# Aula 06 Autenticação e Autorização com JWT
+# Autenticação e Autorização com JWT
 ## Gerando tokens JWT
 Para gerar tokens JWT, precisamos de duas bibliotecas extras: pyjwt e pwdlib. A primeira será usada para a geração do token, enquanto a segunda será usada para criptografar as senhas dos usuários. Para instalá-las, execute o seguinte comando no terminal:
 ~~~shell
@@ -553,7 +436,7 @@ poetry add pyjwt "pwdlib[argon2]"
 Agora, criaremos uma função para gerar nossos tokens JWT. Criaremos um novo arquivo para gerenciar a segurança: security.py. Nesse arquivo iniciaremos a geração dos tokens:
 
 ~~~shell
-echo > .\fast_zero_v2\security.py
+echo > .\mada\security.py
 ~~~
 
 ## Testando a geração de tokens
@@ -563,56 +446,18 @@ echo > .\tests\test_security.py
 
 ## Modificando o endpoint de POST para encriptar a senha
 
-### Sobre o teste da POST /users/
-
-
-## Modificando o endpoint de atualização de usuários
-
 ## Criando um endpoint de geração do token
 ### Utilizando OAuth2PasswordRequestForm
 ~~~shell
 poetry add python-multipart
 ~~~
 
-### Criando um endpoint de geração do token
-
-### Testando /token
-
-## Protegendo os Endpoints
-
-### Aplicação da proteção ao endpoint
-
-## Atualizando os Testes
-
-
-
-## Atualizando o repositório - Commit
-Caso seja um repositório de desenvolvimento compartilhado, verificar se no repositório remoto há algo novo e pedir para baixar.
-~~~shell
-git pull
-~~~
-
-Verificar o status do repositório para ver as mudanças realizadas:
-~~~shell
-git status
-~~~
-
-Se tudo estiver ok, adicionar os arquivos, comitar e por fim enviar para o repositório remoto.
-~~~shell
-git add . 
-git commit -m "Revisando as aulas com um novo projeto criado. Aula 06. Protege os endpoints PUT e DELETE com autenticação"
-git push
-~~~
-
-
-
-
-# Aula 07 Refatorando a Estrutura do Projeto
+# Refatorando a Estrutura do Projeto
 
 ## Criando Routers
-Criaremos inicialmente uma nova estrutura de diretórios chamada routers dentro do seu projeto fast_zero. Aqui, teremos subaplicativos dedicados a funções específicas, como gerenciamento de usuários e autenticação.
+Criaremos inicialmente uma nova estrutura de diretórios chamada routers dentro do seu projeto mada. Aqui, teremos subaplicativos dedicados a funções específicas, como gerenciamento de usuários e autenticação.
 
-├── fast_zero  
+├── mada  
 │  ├── app.py  
 │  ├── database.py  
 │  ├── models.py  
@@ -620,96 +465,23 @@ Criaremos inicialmente uma nova estrutura de diretórios chamada routers dentro 
 │  │  ├── auth.py  
 │  │  └── users.py  
 
-### Implementando um Router para Usuários
-~~~shell
-mkdir routers
-~~~
-
-~~~shell
-echo > fast_zero_v2\routers\users.py
-~~~
-
-### Criando um router para Auth
-~~~shell
-echo > fast_zero_v2\routers\auth.py
-~~~
-
-
-O comando abaixo deu erro, verificar*
-~~~shell
-task serve
-~~~
 
 #### Alteração no teste do token
 Arquivo `tests/test_app.py`
 
-
-
-## Plugando as rotas em app
-
 ## Reestruturando os arquivos de testes
-
-### Ajustando os testes para Auth
-~~~shell
-echo > tests\test_auth.py
-~~~
-
-
-### Ajustando os testes para User
-~~~shell
-echo > tests\test_users.py
-~~~
-
-
 #### Executando os testes
 ~~~shell
 task test
 ~~~
 
-## Refinando a Definição de Rotas com Annotated
-
-## Movendo as constantes para variáveis de ambiente
-
-### Adicionando as constantes a Settings
-
-### Removendo as constantes do código
-
-## Testando se tudo funciona
-~~~shell
-task test
-~~~
-
-erro, meu Swagger não aparece usuários, verificar*
-![alt text](image-2.png)
-
-## Atualizando o repositório - Commit
-Caso seja um repositório de desenvolvimento compartilhado, verificar se no repositório remoto há algo novo e pedir para baixar.
-~~~shell
-git pull
-~~~
-
-Verificar o status do repositório para ver as mudanças realizadas:
-~~~shell
-git status
-~~~
-
-Se tudo estiver ok, adicionar os arquivos, comitar e por fim enviar para o repositório remoto.
-~~~shell
-git add . 
-git commit -m "Refatorando estrutura do projeto: Criado routers para Users e Auth; movido constantes para variáveis de ambiente." 
-git push 
-~~~
-
-
-
-# Aula 08 Tornando o sistema de autenticação robusto
+# Tornando o sistema de autenticação robusto
 
 ## Testes para autenticação
 
 ### Testando a alteração de um usuário não autorizado
 
 #### Criando modelos por demanda com factory-boy
-
 O factory-boy é uma biblioteca que nos permite criar objetos de modelo de teste de forma rápida e fácil. Com ele, podemos criar uma "fábrica" de usuários que produzirá novos objetos de usuário sempre que precisarmos. Isso nos permite criar múltiplos usuários de teste com facilidade, o que é perfeito para nosso cenário atual.
 
 ~~~shell
@@ -718,98 +490,25 @@ poetry add --group dev factory-boy
 
 Executando os testes abaixo em diante, o meu deu erro em alguns, logo, os testes seguintes não foi possível avaliar, verificar* (No final copiei tudo e vi que um arquivo precisava estar diferente, porém preciso rever sobre o token, pois isso está quebrando meus testes)
 
-![alt text](image-3.png)
-
-
-### Testando o DELETE com o usuário errado
-
-
-### Testando a expiração do token
-
-
-### Testando o usuário não existente e senha incorreta
-
-
-#### Testando a exceção para um usuário inexistente
-
-
-#### Testando a exceção para uma senha incorreta
-
-
-
+### Testes gerais
 ## Implementando o refresh do token
-
-
 
 ~~~shell
 poetry add --group dev freezegun
 ~~~
 
-
-## Atualizando o repositório - Commit
-Caso seja um repositório de desenvolvimento compartilhado, verificar se no repositório remoto há algo novo e pedir para baixar.
-~~~shell
-git pull
-~~~
-
-Verificar o status do repositório para ver as mudanças realizadas:
-~~~shell
-git status
-~~~
-
-Se tudo estiver ok, adicionar os arquivos, comitar e por fim enviar para o repositório remoto.
-~~~shell
-git add . 
-git commit -m "Implementando o refresh do token e testes de autorização." 
-git push --set-upstream origin main 
-~~~
-
-
-# Aula 09 Criando Rotas CRUD para Gerenciamento de Tarefas em FastAPI
-## Criando a migração da nova tabela
-
-- Criação das rotas para as operações CRUD das tarefas
-- Fazer com só o usuário dono da tarefa possa acessar e modificar suas tarefas
-- Escrita e execução dos testes para cada operação das tarefas
-
 ## Estrutura inicial do código
 Primeiro, criaremos um novo arquivo chamado todos.py no diretório de routers:
 ~~~shell
-echo > fast_zero_v2\routers\todos.py
+echo > mada\routers\livros.py
 ~~~
 
 ## Implementação da tabela no Banco de dados
 
-### Testando as novas implementações do banco de dados
-
-como verificar o coverage html?*
-
-
-## Schemas para Todos
-
-
-## Endpoint de criação
-
-### Testando o endpoint de criação
-~~~shell
-echo > .\tests\test_todos.py
-~~~
-
-Para executar este teste, você deve usar o comando abaixo no terminal:
-~~~shell
-task test tests/test_todos.py
-~~~
-
-Deu erro no teste, verificar
-
-![alt text](image-4.png)
-
-
 ## Criando a migração da nova tabela
 ~~~shell
-alembic revision --autogenerate -m "create todos table"
+alembic revision --autogenerate -m "create livro table"
 ~~~
-
 
 Depois que a migração for criada, precisamos aplicá-la ao nosso banco de dados. Execute o comando alembic upgrade head para aplicar a migração.
 
@@ -826,89 +525,9 @@ sqlite> .schema
 # ...
 ~~~
 
-## Endpoint de listagem
+### Endpoint de listagem
 
-### Criando uma factory para simplificar os testes
-
-#### Testes para esse endpoint
-
-#### Testando a Paginação
-
-#### Testando o Filtro por Título
-
-#### Testando o Filtro por Descrição
-
-#### Testando o Filtro por Estado
-
-#### Testando a Combinação de Filtros de Estado, Título e Descrição
-
-#### Executando os testes
-~~~shell
-task format  
-task test tests/test_todos.py  
-~~~
-
-Meu teste deu erro, depois voltar aqui e rever o código*
-
-
-## Endpoint de Alteração
-
-### Testes para o Endpoint de Alteração
-~~~shell
-task format  
-task test tests/test_todos.py  
-~~~
-
-Meu teste deu erro, depois voltar aqui e rever o código*
-
-## Endpoint de Deleção
-
-### Testes para o Endpoint de Deleção
-
-~~~shell
-task format  
-task test tests/test_todos.py  
-~~~
-
-Meu teste deu erro, depois voltar aqui e rever o código* (não dá para executar todas as aulas sem o vídeo, essa aqui por exemplo cria o arquivo `tests.factories` e não vi no documento)
-~~~shell
-echo > .\tests\factories.py
-~~~
-
-
-## Atualizando o repositório - Commit
-Caso seja um repositório de desenvolvimento compartilhado, verificar se no repositório remoto há algo novo e pedir para baixar.
-~~~shell
-git pull
-~~~
-
-Verificar o status do repositório para ver as mudanças realizadas:
-~~~shell
-git status
-~~~
-
-Se tudo estiver ok, adicionar os arquivos, comitar e por fim enviar para o repositório remoto.
-~~~shell
-git add . 
-git commit -m "Implementado os endpoints de tarefas." 
-git push --set-upstream origin main 
-~~~
-
-
-
-
-
-# Aula 10 Dockerizando a nossa aplicação e introduzindo o PostgreSQL
-
-Objetivos da aula:
-
-- Compreender os conceitos básicos do Docker
-- Entender como criar uma imagem Docker para a nossa aplicação FastAPI
-- Aprender a rodar a aplicação utilizando Docker
-- Introduzir o conceito de Docker Compose para gerenciamento de múltiplos contêineres
-- Aprender o que é um Dockerfile e sua estrutura
-- Entender os benefícios e motivos da mudança de SQLite para PostgreSQL
-
+# Dockerizando a nossa aplicação e introduzindo o PostgreSQL
 ### pré-requisitos
 Para este caso específico, tenho o Docker Desktop instalado no windows com o serviço sempre parado, logo, precisa iniciar o serviço do docker.
 
@@ -924,17 +543,6 @@ docker run `
     -e POSTGRES_DB=app_db `
     -e POSTGRES_PASSWORD=app_password `
     -p 5432:5432 `
-    postgres
-~~~
-
-#### Comando para Unix/Linux
-~~~shell
-docker run \
-    --name app_database_v2 \ #nome da imagem docker
-    -e POSTGRES_USER=app_user \
-    -e POSTGRES_DB=app_db \ #nome do banco de dados
-    -e POSTGRES_PASSWORD=app_password \
-    -p 5432:5432 \
     postgres
 ~~~
 
@@ -957,7 +565,6 @@ Para ajustar a conexão com o PostgreSQL, modifique seu arquivo `.env` para incl
 DATABASE_URL="postgresql+psycopg://app_user:app_password@localhost:5432/app_db"
 ~~~
 
-
 Atualizar o banco de dados com suas respectivas tabelas com o comando abaixo.
 ~~~shell
 alembic upgrade head
@@ -970,25 +577,9 @@ Agora testar ver se a aplicação está rodando.
 task run
 ~~~
 
-Testando, abrir a aplicação e tentar criar um usuário no http://127.0.0.1:8000/docs
-Caso tenha sido criando tentar logar com o usuário criado.
-
-{
-  "username": "user@example.com",
-  "password": "string"
-}
-
-Agora tentar criar um todo e se tudo ok, ir novamente no banco de dados para ver se também salvou em base de dados.
-
-Oh Glória, tudo ok por aqui até o momento.
-
-
 ## Resolvendo os testes que estavam rodando no sqlite
-
-
 ### Ajustando o arquivo `conftest.py`
 Agora todos os meus testes passaram, mas dependem do banco de dados em pé.
-
 
 ### Testando com Docker
 Existe uma biblioteca python que gerencia as dependências de containers externos
@@ -997,23 +588,14 @@ para que a aplicação seja executada. O TestContainers
 poetry add --group dev testcontainers
 ~~~
 
-Ajustando programa ... e testando novamente ...
-~~~shell
-task test -s
-~~~
-
-
 ## Parte 2 - Criando a imagem do nosso projeto
-
-
 Criando na raiz o arquivo `Dockerfile`
 ~~~shell
 echo > Dockerfile
 ~~~
 
-
 Aqui está um exemplo de Dockerfile para criar o ambiente e executar nossa aplicação:
-~~~shell
+~~~docker
 FROM python:3.12-slim
 ENV POETRY_VIRTUALENVS_CREATE=false
 
@@ -1026,17 +608,14 @@ RUN poetry config installer.max-workers 10
 RUN poetry install --no-interaction --no-ansi
 
 EXPOSE 8000
-CMD poetry run uvicorn --host 0.0.0.0 fast_zero_v2.app:app
+CMD poetry run uvicorn --host 0.0.0.0 mada.app:app
 ~~~
 
 ## Criando a imagem
-Para criar uma imagem Docker a partir do Dockerfile, usamos o comando docker build. O comando a seguir cria uma imagem chamada "fast_zero":
+Para criar uma imagem Docker a partir do Dockerfile, usamos o comando docker build. O comando a seguir cria uma imagem chamada "mada":
 ~~~shell
-docker build -t "fast_zero_v2" .
+docker build -t "mada" .
 ~~~
-
-No terminal funcionou mas no VSCODe não, deu acesso negado em algum arquivo, e o terminal está como adm.
-
 
 Então verificaremos se a imagem foi criada com sucesso usando o comando:
 ~~~shell
@@ -1045,7 +624,7 @@ docker images
 
 ## Executando o container
 ~~~shell
-docker run -it --name fastzeroappv2 -p 8000:8000 fast_zero_v2:latest
+docker run -it --name mada -p 8000:8000 mada:latest
 ~~~
 
 ~~~shell
@@ -1058,7 +637,7 @@ Criação do compose.yaml
 echo > compose.yaml
 ~~~
 
-~~~shell
+~~~yaml
 services:
   fastzero_database:
     image: postgres
@@ -1072,15 +651,15 @@ services:
       - "5432:5432"
 
   fastzero_app:
-    image: fastzero_app_v2
+    image: mada_app
     entrypoint: ./entrypoint.sh
     build: .
     ports:
       - "8000:8000"
     depends_on:
-      - fastzero_database
+      - mada_database
     environment:
-      DATABASE_URL: postgresql+psycopg://app_user:app_password@fastzero_database:5432/app_db
+      DATABASE_URL: postgresql+psycopg://app_user:app_password@mada_database:5432/app_db
 
 volumes:
   pgdata:
@@ -1092,21 +671,11 @@ docker-compose up
 
 Caso dê algum erro de porta, derrube as imagens e crie o compose novamente.
 
-
-![alt text](image-5.png)
-
-Extra - estudar isso depois
-~~~shell
-poetry add ... tolong #biblioteca que auxilia olhar e pesquisar os logs
-~~~
-
-
 ## Implementando o Entrypoint
 Criamos um script chamado entrypoint.sh que irá preparar nosso ambiente antes de a aplicação iniciar:
 ~~~shell
 echo > entrypoint.sh
 ~~~
-
 
 ~~~shell
 #!/bin/sh
@@ -1115,9 +684,8 @@ echo > entrypoint.sh
 poetry run alembic upgrade head
 
 # Inicia a aplicação
-poetry run uvicorn --host 0.0.0.0 --port 8000 fast_zero.app:app
+poetry run uvicorn --host 0.0.0.0 --port 8000 mada.app:app
 ~~~
-
 
 ## Adicionando o Entrypoint ao Docker Compose:
 
@@ -1130,42 +698,15 @@ docker-compose up --build
 Caso dê algum erro de execução no arquivo entrypoint, precisa dar poder de execução no mesmo.
 
 ~~~shell
-docker-compose up -d fastzero_database
+docker-compose up -d mada_database
 ~~~
 
 ~~~shell
 poetry add --group dev testcontainers
 ~~~
 
-## Atualizando o repositório - Commit
-Caso seja um repositório de desenvolvimento compartilhado, verificar se no repositório remoto há algo novo e pedir para baixar.
-~~~shell
-git pull
-~~~
 
-Verificar o status do repositório para ver as mudanças realizadas:
-~~~shell
-git status
-~~~
-
-Se tudo estiver ok, adicionar os arquivos, comitar e por fim enviar para o repositório remoto.
-~~~shell
-git add . 
-git commit -m "Dokerizando o projeto." 
-git push --set-upstream origin main 
-~~~
-
-Conferindo se subiu tudo ok
-~~~shell
-git log
-~~~
-
-
-
-# Aula 11 Automatizando os testes com Integração Contínua (CI)
-
-## Preparando o ambiente
-
+# Automatizando os testes com Integração Contínua (CI)
 Criando os diretórios
 ~~~shell
 mkdir .github
@@ -1181,27 +722,6 @@ echo > .github/workflows/pipeline.yaml
 
 Configurando o workflow de CI
 As configurações dos workflows no GitHub Actions são definidas em um arquivo YAML localizado em um path especificado pelo github no repositório .github/workflows/. Dentro desse diretório podemos criar quantos workflows quisermos. Iniciaremos nossa configuração com um único arquivo que chamaremos de pipeline.yaml:
-~~~shell
-name: Pipeline
-on: [push, pull_request]
-
-jobs:
-  test:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Instalar o python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-~~~
-
-Atualizando o repositório.
-~~~shell
-git add . 
-git commit -m "Instalação do Python no CI" 
-git push 
-~~~
 
 Atualizando as dependencias de arquivos do projeto `.github/workflows/pipeline.yaml`
 
@@ -1224,54 +744,14 @@ Verificando os segredos
 cat .env
 ~~~
 
-Agora ir no repositório https://github.com/LuizPerciliano/fast_zero_sync_v2/actions/runs/10501322321/job/29091123627 e atualizar "Re-run jobs" apertando o botão na aplicação.
+Agora ir no repositório https://github.com/LuizPerciliano/madaxxx e atualizar "Re-run jobs" apertando o botão na aplicação.
 
 Deu erro pois faltou atualizar os segredos no `.github/workflows/pipeline.yaml`
 
-## Atualizando o repositório - Commit
-Caso seja um repositório de desenvolvimento compartilhado, verificar se no repositório remoto há algo novo e pedir para baixar.
-~~~shell
-git pull
-~~~
-
-Verificar o status do repositório para ver as mudanças realizadas:
-~~~shell
-git status
-~~~
-
-Se tudo estiver ok, adicionar os arquivos, comitar e por fim enviar para o repositório remoto.
-~~~shell
-git add . 
-git commit -m "Adicionando as variáveis de ambiente para o CI"
-git push --set-upstream origin main 
-~~~
-
-Verificar o job correto se está ok.
-
-## Dando um up nos testes antes do commit remoto
-Ferramenta: https://github.com/nektos/act
-
-Com o uso da ferramenta acima, até melhorando a visualização dos logs do git para casos de muitos ajustes de erros.
-
-Pesquisar sobre o act e implantar.
-
-
-
 # Aula 12 Fazendo deploy no Fly.io
-
-
 ## O Fly.io
 O Fly.io é uma plataforma de deploy que nos permite lançar nossas aplicações na nuvem e que oferece serviços para diversas linguagens de programação e frameworks como Python e Django, PHP e Laravel, Ruby e Rails, Elixir e Phoenix, etc.
 
-### Flyclt
-Uma das formas de interagir com a plataforma é via uma aplicação de linha de comando disponibilizada pelo Fly, o flyctl.
-
-Instalando no windows: https://fly.io/docs/flyctl/install/
-~~~shell
-pwsh -Command "iwr https://fly.io/install.ps1 -useb | iex"
-~~~
-
-Provavelmente será necessário reiniciar o terminal, logo após teste o comando abaixo:
 ~~~shell
 flyctl version
 ~~~
@@ -1287,14 +767,8 @@ Para evitar o deploy no primeiro momento, pois ainda existem coisas para serem c
 flyctl launch --no-deploy
 ~~~
 
-A pergunta feita ao final dessa seção Do you want to tweak these settings before proceeding? pode ser traduzida como: Você deseja ajustar essas configuração antes de prosseguir?. Diremos que sim, digitando Y e em seguida Enter.
-
-Após configurar similar a imagem a abaixo, selecione confirma:
-![alt text](image-6.png)
-
-
 Acessos:
-- Admin URL: https://fly.io/apps/fast-zero-777
+- Admin URL: https://fly.io/apps/fastxxx
 
 
 ## Configuração dos segredos
@@ -1356,9 +830,9 @@ fly deploy --local-only --ha=false
 
 Verificando o log da aplicação.
 ~~~shell
-fly logs -a fast-zero-v2
+fly logs -a mada
 ou 
-fly logs -a fast-zero-v2 | tl # tem que ter a biblioteca tl instalada
+fly logs -a mada | tl # tem que ter a biblioteca tl instalada
 ou site app
 ~~~
 
@@ -1371,8 +845,6 @@ Entrando na máquina no fly.io
 ~~~shell
 flyctl ssh console
 ~~~
-
-
 
 Colocar no dockeringone:
 tests
@@ -1387,7 +859,7 @@ alembic upgrade head
 ou rodar diretamente o comando abaixo:
 
 ~~~shell
-flyctl ssh console -a fast-zero-v2 -C "poetry run alembic upgrade head"
+flyctl ssh console -a mada -C "poetry run alembic upgrade head"
 ~~~
 
 ## Atualizando o repositório - Commit
@@ -1411,37 +883,3 @@ git push --set-upstream origin main
 Conferindo se subiu tudo ok
 ~~~shell
 git log
-~~~
-
-
-# Aula 13 Despedida e próximos passos
-
-Revisão geral e um tapa no readme.
-
-# Projeto final
-
-
-
-# Final da Aplicação
-## Passos para subir a aplicação e ou ajustar o projeto após tudo finalizado 
-
-~~~shell
-# se tiver docker, iniciar o serviço
-  # Get-Service -Name com.docker.service # verifica o seviço
-  # Start-Service -Name com.docker.service
-  # iniciar as máquinas necessárias
-
-Start-Service -Name com.docker.service
-docker start app_database_v2
-# Verficar se tem algo a comitar ou puxar do repositório remoto
-clear
-cd C:\projetos\projetos-GIT\fast_zero_v2\ 
-poetry shell
-# codifica
-# testa
-# comita
-# deploy
-
-
-
--->
