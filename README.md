@@ -727,8 +727,8 @@ Atualizando as dependencias de arquivos do projeto `.github/workflows/pipeline.y
 
 Atualizando o repositório e ver se executou os testes
 ~~~shell
-git add .\.github\workflows\pipeline.yaml
-git commit -m "Executando os testes" 
+git add .
+git commit -m "Executando os testes no CI" 
 git push 
 ~~~
 

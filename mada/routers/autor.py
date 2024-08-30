@@ -1,6 +1,11 @@
 from http import HTTPStatus
 from typing import Annotated
 
+from fastapi import APIRouter, Depends, HTTPException
+from fastapi.security import OAuth2PasswordRequestForm
+from sqlalchemy import select
+from sqlalchemy.orm import Session
+
 from mada.database import get_session
 from mada.models import User
 from mada.schemas import Token
@@ -9,10 +14,6 @@ from mada.security import (
     get_current_user,
     verify_password,
 )
-from fastapi import APIRouter, Depends, HTTPException
-from fastapi.security import OAuth2PasswordRequestForm
-from sqlalchemy import select
-from sqlalchemy.orm import Session
 
 router = APIRouter(prefix='/auth', tags=['auth'])
 

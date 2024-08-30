@@ -8,11 +8,11 @@ from sqlalchemy.orm import Session
 from mada.database import get_session
 from mada.models import Livro, User
 from mada.schemas import (
-    Message,
     LivroList,
     LivroPublic,
     LivroSchema,
     LivroUpdate,
+    Message,
 )
 from mada.security import get_current_user
 
